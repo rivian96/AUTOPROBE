@@ -1,7 +1,6 @@
 #! /bin/bash
 
 
-
 echo -e "\e[35m
 ░█████╗░██╗░░░██╗████████╗░█████╗░██████╗░██████╗░░█████╗░██████╗░███████╗
 ██╔══██╗██║░░░██║╚══██╔══╝██╔══██╗██╔══██╗██╔══██╗██╔══██╗██╔══██╗██╔════╝
@@ -10,9 +9,38 @@ echo -e "\e[35m
 ██║░░██║╚██████╔╝░░░██║░░░╚█████╔╝██║░░░░░██║░░██║╚█████╔╝██████╦╝███████╗
 ╚═╝░░╚═╝░╚═════╝░░░░╚═╝░░░░╚════╝░╚═╝░░░░░╚═╝░░╚═╝░╚════╝░╚═════╝░╚══════╝\e[0m"
 
-
+echo ""
 
 echo -e "\e[31m usage: autoprobe.sh <memory image> \e[0m"
+
+
+echo ""
+
+#! /bin/bash
+
+# Function to delete existing results and exports folders
+delete_existing_folders() {
+    if [ -d "results" ]; then
+        rm -r results
+    fi
+    if [ -d "exports" ]; then
+        rm -r exports
+    fi
+}
+
+# Check if results and exports folders exist
+if [ -d "results" ] || [ -d "exports" ]; then
+    echo "Existing results and exports folders found. Deleting..."
+    delete_existing_folders
+fi
+
+echo "creating.... new results and exports folder"
+
+# Create new results and exports folders
+mkdir results
+mkdir exports
+
+
 
 
 # echo ""
@@ -25,13 +53,8 @@ echo -e "\e[31m usage: autoprobe.sh <memory image> \e[0m"
 echo -e "\e[33m scanning results will be saved in the /results folder \e[0m"
 echo ""
 echo -e  "\e[33m files extracted from memory will be saved to the /exports folder \e[0m"
-# echo ""
 
-# #setup operations
-
-mkdir results
-mkdir exports
-
+echo ""
 
 
 res=results
@@ -73,7 +96,11 @@ read -p "Press Enter to continue..."
 
 echo ""
 
-echo -e "\e[94manalysing processes from pslist\e[0m"
+volatility -f $1 --profile=$kdbg psscan | tee -a $res/psscan_"$1"\_.txt
+
+echo ""
+
+echo -e "analysing processes from \e[94mPSLIST and PSSCAN\e[0m"
 
 echo ""
 echo""
@@ -134,14 +161,21 @@ read -p "Press Enter to continue..."
 
 echo ""
 
-echo -e "\e[95m
+echo -e "
 ░█▄─░█ █▀▀█ █▀▀▄ 　 █▀▀ █▀▀█ █▀▀█ █▀▀ 　 █▀▀█ █▀▀█ █▀▀█ █▀▀ █▀▀ █▀▀ █▀▀ █▀▀ █▀▀ 
 ░█░█░█ █──█ █──█ 　 █── █──█ █▄▄▀ █▀▀ 　 █──█ █▄▄▀ █──█ █── █▀▀ ▀▀█ ▀▀█ █▀▀ ▀▀█ 
-░█──▀█ ▀▀▀▀ ▀──▀ 　 ▀▀▀ ▀▀▀▀ ▀─▀▀ ▀▀▀ 　 █▀▀▀ ▀─▀▀ ▀▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀\e[0m"
+░█──▀█ ▀▀▀▀ ▀──▀ 　 ▀▀▀ ▀▀▀▀ ▀─▀▀ ▀▀▀ 　 █▀▀▀ ▀─▀▀ ▀▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀ "
+
+
+echo -e "\e[94m*************\e[0m"
+echo -e "\e[36mPSLIST\e[0m"
+echo -e "\e[94m*************\e[0m"
+
 
 echo -e "\e[34mThese processes are highly\e[0m \e[31mSUSPICIOUS\e[0m "
 
-echo -e "\e[95mBecause these processes are typically user-installed applications, 
+
+echo -e "\e[93mBecause these processes are typically user-installed applications, 
 background services, or utilities that provide additional functionalities 
 beyond what the operating system offers by default\e[0m"
 
@@ -151,6 +185,32 @@ grep -E -i -v "(System Idle Process|System|smss|csrss|wininit|services|lsass|svc
 echo -e "\e[94mOffset(V)  Name                    PID   PPID   Thds     Hnds   Sess  Wow64 Start                          Exit                          \e[0m"
 
 cat $res/pslist_Noncore_$1\_.txt
+
+# Prompt user to press Enter to continue
+
+echo -e "\e[94m Press enter to continue\e[0m"
+
+read -p "Press Enter to continue..."
+
+
+echo -e "
+░█▄─░█ █▀▀█ █▀▀▄ 　 █▀▀ █▀▀█ █▀▀█ █▀▀ 　 █▀▀█ █▀▀█ █▀▀█ █▀▀ █▀▀ █▀▀ █▀▀ █▀▀ █▀▀ 
+░█░█░█ █──█ █──█ 　 █── █──█ █▄▄▀ █▀▀ 　 █──█ █▄▄▀ █──█ █── █▀▀ ▀▀█ ▀▀█ █▀▀ ▀▀█ 
+░█──▀█ ▀▀▀▀ ▀──▀ 　 ▀▀▀ ▀▀▀▀ ▀─▀▀ ▀▀▀ 　 █▀▀▀ ▀─▀▀ ▀▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀ "
+
+
+echo -e "\e[94m*************\e[0m"
+echo -e "\e[36mPSSCAN\e[0m"
+echo -e "\e[94m*************\e[0m"
+
+echo -e "\e[33mOn analysing the results from psscan and pslist we can find the processes which are terminated\e[0m"
+
+
+grep -E -i -v "(System Idle Process|System|smss|csrss|wininit|services|lsass|svchost|explorer|winlogon|spoolsv|lsass|dllhost|dwm|taskhost|spoolsv|lsaiso|SearchIndexer|RuntimeBroker|SecurityHealthService|NisSrv|WmiPrvSE|PresentationFontCache|csrss|winlogon|LogonUI|fontdrvhost|WUDFHost|WmiApSrv|wininit|conhost|taskhostw|rdpclip|wisptis|WaaSMedicSvc)" $res/psscan_$1\_.txt > $res/psscan_Noncore_$1\_.txt
+
+echo -e "\e[94mOffset(V)  Name                    PID   PPID   Thds     Hnds   Sess  Wow64 Start                          Exit                          \e[0m"
+
+cat $res/psscan_Noncore_$1\_.txt
 
 
 # Prompt user to press Enter to continue
@@ -166,3 +226,13 @@ echo -e "\e[31m Now Let's look at the parent child relationship  \e[0m "
 volatility -f $1 --profile=$kdbg psscan --output=dot --output-file=psscan.dot
 
 xdot psscan.dot
+
+# Prompt user to press Enter to continue
+
+echo -e "\e[94m Press enter to continue\e[0m"
+
+read -p "Press Enter to continue..."
+
+
+
+
