@@ -170,8 +170,32 @@ will show which processes where actually hidden or terminated\e[0m"
 
 cat $res/psscan_"$1"\_.txt | grep -E --color $(cat $res/pslist_"$1"\_.txt $res/psscan_"$1"\_.txt | cut -d " " -f2 | sort | uniq -c | grep "1" | cut -d " " -f8 | grep -v "-" | tr '\n' '|')
 
-echo "the process name shows that these processes are not preasent in the pslist result"
+echo ""
 
+echo -e "\e[34mthe process name in red shows that these processes are not preasent in the pslist result\e[0m"
+
+echo ""
+
+echo -e "\e[33mpsscan plugin relies on proc tag which is a great way to identify
+processes.But it turns out that if an attacker can somehow install a
+kernel driver on a system then they can modify the proc tag for their purposes..\e[0m"
+
+echo ""
+
+echo -e "\e[94mUsing the Volatility psxview plugin, 
+we can see if the process appears in pslist and psscan plugin by the boolean value True. 
+ A False within the column indicates that the process is not found in that area.
+This allows the analyst to review the list and determine if there’s a legitimate reason for that.\e[0m"
+
+echo ""
+
+volatility -f $1 --profile=$kdbg psxview | tee -a $res/psxview_"$$1"\_.txt
+
+echo ""
+
+echo -e "\e[92mresults of psxview after applying some rules..\e[0m"
+
+volatility -f $1 --profile=$kdbg psxview -R | tee -a $res/psxviewrules_"$1"\_.txt 
 
 
 echo ""
