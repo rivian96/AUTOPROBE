@@ -294,11 +294,31 @@ grep -E -i -v "(System Idle Process|System|smss|csrss|wininit|services|lsass|svc
 
 cat $res/psscan_Noncore_$1\_.txt
 
+# Inform the user that all processes have been listed
+echo -e "\e[94mAll processes have been listed. Now, let's look at the handles.\e[0m"
 
+while true; do
+    # Prompt the user to enter the PID for the specific process they want to examine handles for
+    echo -e "\e[92mEnter the PID of the process for which you want to examine handles:\e[0m"
 
+    read -p "Enter the PID of the process for which you want to examine handles: " pid
 
+    # Run Volatility's handles plugin to gather information about objects and handles for the specified process
+    echo -e "\e[92mAnalyzing objects and handles for process $pid\e[0m"
+    volatility -f $1 --profile=$kdbg handles -p $pid | tee -a results/handles_$pid.txt
 
+    echo ""
+    echo -e "\e[33mAnalysis completed for process $pid\e[0m"
+    echo ""
 
+    # Ask the user if they want to analyze handles for another process
+    echo -e "\e[94mDo you want to analyze handles for another process? (yes/no): \e[0m"
 
+    read -p "Do you want to analyze handles for another process? (yes/no): " choice
 
+    if [ "$choice" != "yes" ]; then
+        break
+    fi
+done
 
+echo -e "\e[96mHandle analysis completed for the processes.\e[0m"
