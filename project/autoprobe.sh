@@ -14,9 +14,41 @@ echo ""
 echo -e "\e[31m usage: autoprobe.sh <memory image> \e[0m"
 
 
-echo ""
+# Display menu options
+while true; do
+    echo "Menu Options:"
+    echo "1. Process Investigation"
+    echo "2. Exit"
 
-#! /bin/bash
+    read -p "Enter your choice (1 or 2): " choice
+
+    case $choice in
+        1)
+            echo ""
+            echo -e "\e[92mProcess Investigation:\e[0m"
+            echo ""
+            echo -e "\e[94m---------------------\e[0m"
+            echo -e "\e[1m \e[33mAutoprobe Methodology\e[0m \e[0m"
+            echo -e "\e[94m--------------------\e[0m"
+            echo ""
+            echo -e "\e[1m \e[92m1. Identifying the image\e[0m \e[0m"
+            echo -e "\e[1m \e[33m2. Listing processes using pslist\e[0m \e[0m"
+            echo -e "\e[1m \e[33m3. Listing processes using psscan\e[0m \e[0m"
+            echo -e "\e[1m \e[33m4. listing processes using psxview\e[0m \e[0m"
+            echo -e "\e[1m \e[35m5. Comparing the results to identify suspicious processese[0m \e[0m \e[0m"
+            echo -e "\e[1m \e[35m6. Filtering and categorizing processes (singleton, windows core, non-core)\e[0m \e[0m"
+            echo -e "\e[1m \e[35m7. Inspecting handles for selected processes\e[0m \e[0m"
+
+            echo ""
+            
+            read -p "press Enter to continue..."
+
+            # Run the process investigation section of the script
+            # Add your existing code for process investigation here
+
+            echo ""
+
+
 
 # Function to delete existing results and exports folders
 delete_existing_folders() {
@@ -30,12 +62,11 @@ delete_existing_folders() {
 
 # Check if results and exports folders exist
 if [ -d "results" ] || [ -d "exports" ]; then
-    echo "Existing results and exports folders found. Deleting..."
+    
     delete_existing_folders
 fi
 echo ""
 
-echo "creating.... new results and exports folder"
 
 # Create new results and exports folders
 mkdir results
@@ -49,10 +80,9 @@ mkdir exports
 
 
 
-# echo ""
+
 
 echo -e "\e[33m scanning results will be saved in the /results folder \e[0m"
-echo ""
 echo -e  "\e[33m files extracted from memory will be saved to the /exports folder \e[0m"
 
 echo ""
@@ -70,7 +100,7 @@ date > $res/imageinfo_"$1"\_.txt
 volatility -f $1 imageinfo | tee -a $res\imageinfo_"$1"\_.txt
 
 echo ""
-echo -e " \e[31m enter the KDBG signature to use for this memory image,example win2000xbbf1 \e[0m "
+echo -e " \e[1m \e[31m enter the KDBG signature to use for this memory image,example win2000xbbf1 \e[0m \e["
 
 read kdbg
 
@@ -322,3 +352,14 @@ while true; do
 done
 
 echo -e "\e[96mHandle analysis completed for the processes.\e[0m"
+
+            ;;
+        2)
+            echo "Exiting..."
+            exit 0
+            ;;
+        *)
+            echo "Invalid choice. Please enter 1 or 2."
+            ;;
+    esac
+done
