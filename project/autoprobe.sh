@@ -1,24 +1,24 @@
 #! /bin/bash
 
 
-echo -e "\e[35m
-░█████╗░██╗░░░██╗████████╗░█████╗░██████╗░██████╗░░█████╗░██████╗░███████╗
-██╔══██╗██║░░░██║╚══██╔══╝██╔══██╗██╔══██╗██╔══██╗██╔══██╗██╔══██╗██╔════╝
-███████║██║░░░██║░░░██║░░░██║░░██║██████╔╝██████╔╝██║░░██║██████╦╝█████╗░░
-██╔══██║██║░░░██║░░░██║░░░██║░░██║██╔═══╝░██╔══██╗██║░░██║██╔══██╗██╔══╝░░
-██║░░██║╚██████╔╝░░░██║░░░╚█████╔╝██║░░░░░██║░░██║╚█████╔╝██████╦╝███████╗
-╚═╝░░╚═╝░╚═════╝░░░░╚═╝░░░░╚════╝░╚═╝░░░░░╚═╝░░╚═╝░╚════╝░╚═════╝░╚══════╝\e[0m"
+echo -e "\e[1m \e[40m
 
-echo ""
+   _____          __        __________              ___.           
+  /  _  \  __ ___/  |_  ____\______   \_______  ____\_ |__   ____  
+ /  /_\  \|  |  \   __\/  _ \|     ___/\_  __ \/  _ \| __ \_/ __ \ 
+/    |    \  |  /|  | (  <_> )    |     |  | \(  <_> ) \_\ \  ___/ 
+\____|__  /____/ |__|  \____/|____|     |__|   \____/|___  /\___  >
+        \/                                               \/     \/ 
+\e[0m \e[0m"
 
-echo -e "\e[31m usage: autoprobe.sh <memory image> \e[0m"
+echo -e "\e[1m \e[41m usage: autoprobe.sh <memory image> \e[0m \e[0m"
 
 
 # Display menu options
 while true; do
-    echo "Menu Options:"
-    echo "1. Process Investigation"
-    echo "2. Exit"
+    echo -e "\e[1m \e[33mMenu Options:\e[0m \e[0m"
+    echo -e "\e[92m1. Process Investigation\e[0m"
+    echo -e "\e[92m2. Exit\e[0m"
 
     read -p "Enter your choice (1 or 2): " choice
 
@@ -28,16 +28,16 @@ while true; do
             echo -e "\e[92mProcess Investigation:\e[0m"
             echo ""
             echo -e "\e[94m---------------------\e[0m"
-            echo -e "\e[1m \e[33mAutoprobe Methodology\e[0m \e[0m"
+            echo -e "\e[1m \e[40mAutoprobe Methodology\e[0m \e[0m"
             echo -e "\e[94m--------------------\e[0m"
             echo ""
-            echo -e "\e[1m \e[92m1. Identifying the image\e[0m \e[0m"
-            echo -e "\e[1m \e[33m2. Listing processes using pslist\e[0m \e[0m"
-            echo -e "\e[1m \e[33m3. Listing processes using psscan\e[0m \e[0m"
-            echo -e "\e[1m \e[33m4. listing processes using psxview\e[0m \e[0m"
-            echo -e "\e[1m \e[35m5. Comparing the results to identify suspicious processese[0m \e[0m \e[0m"
-            echo -e "\e[1m \e[35m6. Filtering and categorizing processes (singleton, windows core, non-core)\e[0m \e[0m"
-            echo -e "\e[1m \e[35m7. Inspecting handles for selected processes\e[0m \e[0m"
+            echo -e "\e[40m1. Identifying the image\e[0m \e[0m"
+            echo -e "\e[40m2. Listing processes using pslist\e[0m \e[0m"
+            echo -e "\e[40m3. Listing processes using psscan\e[0m \e[0m"
+            echo -e "\e[40m4. listing processes using psxview\e[0m \e[0m"
+            echo -e "\e[41m5. Comparing the results to identify suspicious processes \e[0m \e[0m"
+            echo -e "\e[40m6. Filtering and categorizing processes (singleton, windows core, non-core)\e[0m \e[0m"
+            echo -e "\e[40m7. Inspecting handles for selected processes\e[0m \e[0m"
 
             echo ""
             
@@ -82,8 +82,8 @@ mkdir exports
 
 
 
-echo -e "\e[33m scanning results will be saved in the /results folder \e[0m"
-echo -e  "\e[33m files extracted from memory will be saved to the /exports folder \e[0m"
+echo -e "\e[33m \e[40mscanning results will be saved in the /results folder \e[0m\e[0m"
+echo -e "\e[33m \e[40mfiles extracted from memory will be saved to the /exports folder \e[0m\e[0m"
 
 echo ""
 
@@ -100,19 +100,20 @@ date > $res/imageinfo_"$1"\_.txt
 volatility -f $1 imageinfo | tee -a $res\imageinfo_"$1"\_.txt
 
 echo ""
-echo -e " \e[1m \e[31m enter the KDBG signature to use for this memory image,example win2000xbbf1 \e[0m \e["
+echo -e " \e[1m \e[41m enter the KDBG signature to use for this memory image,example win2000xbbf1 \e[0m \e["
 
 read kdbg
 
 echo ""
 
-echo -e "\e[33m the operating system profile selected is : --profile=\e[0m"$kdbg
+echo -e "\e[33m \e[1m \e[40m the operating system profile selected is : --profile=\e[0m\e[0m\e[0m"$kdbg
 
 exec 2>/dev/null
+echo ""
 
 # automating pslist and psscan
 
-echo -e "listing processes \e[31m{pslist}\e[0m"
+echo -e "\e[1mʟɪsᴛɪɴɢ ᴘʀᴏᴄᴇssᴇs \e[41mPSLIST\e[0m\e[0m"
 
 echo -e "\e[33m
 ╭━╮╱╭┳━━━┳━━━━┳━━━╮
@@ -123,13 +124,13 @@ echo -e "\e[33m
 ╰╯╱╰━┻━━━╯╱╰╯╱╰━━━╯\e[0m"
 
 
-echo -e "\e[94m The pslist module list the processes from memory like the task manager does, 
-so it will not be able to find terminated processes and processes hidden by rootkits..\e[0m"
+echo -e "\e[94m \e[40mThe pslist module list the processes from memory like the task manager does, 
+so it will not be able to find terminated processes and processes hidden by rootkits..\e[0m\e[0m"
 
-echo -e "\e[94mThe windows kernel uses the EPROCESS data structure to describe each running process
-pslist traverses the list of active process structures that the Windows kernel maintains.\e[0m"
+echo -e "\e[94m \e[40mThe windows kernel uses the EPROCESS data structure to describe each running process
+pslist traverses the list of active process structures that the Windows kernel maintains.\e[0m\e[0m"
 
-echo -e "\e[35m more on: \e[0m"
+echo -e "\e[41m More on: \e[0m"
 echo -e "\e[92m http://akovid.blogspot.com/2014/02/difference-between-pslist-and-psscan.html\e[0m"
 
 echo ""
@@ -139,8 +140,9 @@ volatility -f $1 --profile=$kdbg pslist | tee -a $res/pslist_"$1"\_.txt
 
 echo ""
 
-echo -e  "\e[36m Now Let's look at the parent child relationships of the above listed processes..
-by \e[33mpslist module\e[0m  \e[0m"
+echo -e  "\e[41m Now Let's look at the parent child relationships of the above listed processes..\e[0m"
+
+
 
 
 
@@ -158,22 +160,12 @@ xdot $res/pstree_"$1"\_.dot
 
 echo ""
 
+echo -e "\e[1mʟɪsᴛɪɴɢ ᴘʀᴏᴄᴇssᴇs \e[41mPSSCAN\e[0m\e[0m"
 
-
-echo -e "\e[92m
-╭━╮╱╭┳━━━┳━━━━┳━━━╮
-┃┃╰╮┃┃╭━╮┃╭╮╭╮┃╭━━╯
-┃╭╮╰╯┃┃╱┃┣╯┃┃╰┫╰━━╮
-┃┃╰╮┃┃┃╱┃┃╱┃┃╱┃╭━━╯
-┃┃╱┃┃┃╰━╯┃╱┃┃╱┃╰━━╮
-╰╯╱╰━┻━━━╯╱╰╯╱╰━━━╯\e[0m"
-
-echo -e "\e[103mThe psscan module scans the whole memory for process structures 
-and is able to find both hidden an terminated processes.\e[0m"
+echo -e " \e[33m \e[40mThe psscan module scans the whole memory for process structures\e[0m"
+echo -e " \e[33m \e[40mand is able to find both hidden an terminated processes.\e[0m"
 
 volatility -f $1 --profile=$kdbg psscan | tee -a $res/psscan_"$1"\_.txt
-
-
 
 echo ""
 
@@ -194,15 +186,15 @@ xdot $res/psscan_"$1"\_.dot
 
 
 
-echo -e "\e[103m By comparing the results from both pslist and psscan 
-will show which processes where actually hidden or terminated\e[0m"
+echo -e "\e[41mBy comparing the results from both pslist and psscan\e[0m" 
+echo -e "\e[40mwill show which processes where actually hidden or terminated\e[0m"
 
 
 cat $res/psscan_"$1"\_.txt | grep -E --color $(cat $res/pslist_"$1"\_.txt $res/psscan_"$1"\_.txt | cut -d " " -f2 | sort | uniq -c | grep "1" | cut -d " " -f8 | grep -v "-" | tr '\n' '|')
 
 echo ""
 
-echo -e "\e[34mthe process name in red shows that these processes are not preasent in the pslist result\e[0m"
+echo -e "\e[40mthe process name in \e[41mRED\e[0m] shows that these processes are not preasent in the pslist result\e[0m"
 
 echo ""
 
@@ -229,12 +221,11 @@ volatility -f $1 --profile=$kdbg psxview -R | tee -a $res/psxviewrules_"$1"\_.tx
 
 
 echo ""
-echo ""
 
 echo -e "
 █▀▀ ░▀░ █▀▀▄ █▀▀▀ █░░ █▀▀ ▀▀█▀▀ █▀▀█ █▀▀▄ 　 █▀▀█ █▀▀█ █▀▀█ █▀▀ █▀▀ █▀▀ █▀▀ 
 ▀▀█ ▀█▀ █░░█ █░▀█ █░░ █▀▀ ░░█░░ █░░█ █░░█ 　 █░░█ █▄▄▀ █░░█ █░░ █▀▀ ▀▀█ ▀▀█ 
-▀▀▀ ▀▀▀ ▀░░▀ ▀▀▀▀ ▀▀▀ ▀▀▀ ░░▀░░ ▀▀▀▀ ▀░░▀ 　 █▀▀▀ ▀░▀▀ ▀▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀ "
+▀▀▀ ▀▀▀ ▀░░▀ ▀▀▀▀ ▀▀▀ ▀▀▀ ░░▀░░ ▀▀▀▀ ▀░░▀ 　 █▀▀▀ ▀░▀▀ ▀▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀"
 
 echo -e "\e[94m singleton processes are programs or services on acomputer
 that are designed to run only one instance at a time. 
@@ -253,13 +244,10 @@ cat $res/pslist_singletons_$1\_.txt
 
 
 echo -e "\e[93m
-█░░░█ ░▀░ █▀▀▄ █▀▀▄ █▀▀█ █░░░█ █▀▀ 　 █▀▀ █▀▀█ █▀▀█ █▀▀ 
-█▄█▄█ ▀█▀ █░░█ █░░█ █░░█ █▄█▄█ ▀▀█ 　 █░░ █░░█ █▄▄▀ █▀▀ 
-░▀░▀░ ▀▀▀ ▀░░▀ ▀▀▀░ ▀▀▀▀ ░▀░▀░ ▀▀▀ 　 ▀▀▀ ▀▀▀▀ ▀░▀▀ ▀▀▀ 
 
-█▀▀█ █▀▀█ █▀▀█ █▀▀ █▀▀ █▀▀ █▀▀ █▀▀ █▀▀ 
-█░░█ █▄▄▀ █░░█ █░░ █▀▀ ▀▀█ ▀▀█ █▀▀ ▀▀█ 
-█▀▀▀ ▀░▀▀ ▀▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀ \e[0m"
+█░░░█ ░▀░ █▀▀▄ █▀▀▄ █▀▀█ █░░░█ █▀▀ 　 █▀▀ █▀▀█ █▀▀█ █▀▀ 　 █▀▀█ █▀▀█ █▀▀█ █▀▀ █▀▀ █▀▀ █▀▀ █▀▀ █▀▀ 
+█▄█▄█ ▀█▀ █░░█ █░░█ █░░█ █▄█▄█ ▀▀█ 　 █░░ █░░█ █▄▄▀ █▀▀ 　 █░░█ █▄▄▀ █░░█ █░░ █▀▀ ▀▀█ ▀▀█ █▀▀ ▀▀█ 
+░▀░▀░ ▀▀▀ ▀░░▀ ▀▀▀░ ▀▀▀▀ ░▀░▀░ ▀▀▀ 　 ▀▀▀ ▀▀▀▀ ▀░▀▀ ▀▀▀ 　 █▀▀▀ ▀░▀▀ ▀▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀▀▀\e[0m"
 
 echo -e "\e[35mWindows core processes are essential programs or services 
 that are fundamental to the operation of the Windows operating system...\e[0m"
@@ -347,11 +335,43 @@ while true; do
     read -p "Do you want to analyze handles for another process? (yes/no): " choice
 
     if [ "$choice" != "yes" ]; then
-        break
+            break
+        
     fi
 done
 
 echo -e "\e[96mHandle analysis completed for the processes.\e[0m"
+
+
+# Function to examine common startup registry keys
+examine_registry_keys() {
+    echo ""
+    echo -e "\e[1m\e[33mExamining common startup registry keys:\e[0m"
+    
+    # Define an array of common startup registry keys
+    startup_keys=(
+        "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce"
+        "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run"
+        "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
+        "HKCU\Software\Microsoft\Windows NT\CurrentVersion\Windows"
+        "HKCU\Software\Microsoft\Windows NT\CurrentVersion\Windows\Run"
+        "HKCU\Software\Microsoft\Windows\CurrentVersion\Run"
+        "HKCU\Software\Microsoft\Windows\CurrentVersion\RunOnce"
+    )
+
+    # Iterate through the array of startup keys and examine each one
+    for key in "${startup_keys[@]}"; do
+        echo -e "\e[92mExamining registry key: $key\e[0m"
+        volatility -f "$1" --profile="$kdbg" printkey -K "$key" | tee -a "$res/registry_$key_$1.txt"
+        echo ""
+    done
+
+    echo -e "\e[94mRegistry key examination completed.\e[0m"
+}
+
+# Call the function to examine common startup registry keys
+examine_registry_keys "$1"
+
 
             ;;
         2)
